@@ -1,6 +1,6 @@
 # Automatic_HTML_reports using Jinja2
 
-## Use Jinja2 templating to auto generate a static site given a template. This demonstrates the general layout
+## Use Jinja2 templating to auto generate a static site given a template. This is useful when you have to report a large number of results of separate experiments, each of which can be represented in a general fixed template of results we wish to display
 
 All templates and html that is embedded must be kept in the templates folder. The template file is usually called **index.html** . There is also a .html table called *df_info.html* which is insered into the template (I generated the table from a pandas dataframe (convert to html feature of the df))
 
