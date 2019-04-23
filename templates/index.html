@@ -1,0 +1,23 @@
+
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Transcription Factor: {{vars.TF}} </h1>
+<h2>Table of seqlet counts</h2>
+{% include 'df_info.html'%}
+
+
+
+
+<h2>TF Modisco motifs</h2>
+<embed src={{vars.motifs}} alt="Motifs" width="800px" height="400px">
+
+
+<h2>Clustering Motifs on Jaccard Similarity</h2>
+<embed src={{vars.clustermap}} alt="Clustermap" width="300px" height="300px">
+
+
+
+</body>
+</html>
