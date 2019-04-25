@@ -1,7 +1,8 @@
 from jinja2 import Environment, FileSystemLoader
 import os,glob,shutil
 import pandas as pd
-
+from PIL import Image
+import numpy as np
 
 def copy_files(base_dir='./',source_dir='./',target_dir_base='./'):
 	assert(os.path.exists(base_dir))
@@ -70,10 +71,20 @@ def get_structural_annotation(tf):
     annotation = test_df.loc[test_df['TF']==tf]['Subfamily'].values[0]
     return(str(annotation))
 
-def generate_html(tf,target_dir):
+def aspect_ratio(path_to_image):
+	image = Image.open(path_to_image)
+	image_arr = np.array(image)
+	height,width,channels = image_arr.shape
+	aspect_ratio = float(height)/float(width)
+	return(aspect_ratio)
+
+
+def generate_html(tf,target_dir,target_dir_html=None):
 	'''Base dir is the path to the cloned github repo
 	   Source dir is the path to TF motif files and html tables
-	   Target dir is where we want to host
+	   target_dir is where we want to host (ie. would have the template and the files ; would be on the hosting server)
+	   target_dir_html : If we want the final generated html to be in a different location from the target dir (for a cleaner look)
+
 	'''
 	#copy_files(base_dir,source_dir,target_dir)
 
@@ -82,8 +93,12 @@ def generate_html(tf,target_dir):
 	env = Environment( loader = FileSystemLoader(templates_dir) )
 	template = env.get_template('index.html')
 	 
-	 
-	filename = os.path.join(root,'Modisco_report.html')
+	if not target_dir_html:
+		filename = os.path.join(root,'{}_Modisco_report.html'.format(tf))
+	else:
+		assert(os.path.exists(target_dir_html))
+		filename = os.path.join(target_dir_html,'{}_Modisco_report.html'.format(tf))
+
 	variables = {'short_patterns':os.path.join(root,'short_patterns.jpg'),
 				'short_patterns_clustermap':os.path.join(root,'short_patterns_clustermap.jpg'),
 				'long_patterns':os.path.join(root,'long_patterns.jpg'),
@@ -105,12 +120,30 @@ def generate_html(tf,target_dir):
 				'long_patterns_info':os.path.exists(os.path.join(templates_dir,'long_patterns_info.html')),
 				'model_perfofmances':os.path.exists(os.path.join(templates_dir,'model_perfofmances.html'))}
 
+	patterns_width = 800
+	short_height = None
+	long_height = None
+	try:
+		short_patterns_aspect_ratio = aspect_ratio(variables['short_patterns'])
+		#print("short_patterns aspect ratio: {}".format(str(short_patterns_aspect_ratio)))
+		short_height = int(short_patterns_aspect_ratio*patterns_width)
+	except Exception as e:
+		print(str(e))
+		pass
+	try:
+		long_patterns_aspect_ratio = aspect_ratio(variables['long_patterns'])
+		long_height = int(long_patterns_aspect_ratio*patterns_width)
+	except:
+		pass
 
+
+	aspect = {'width':'800px','short_height':'{}px'.format(str(short_height)),'long_height':'{}px'.format(str(long_height))}
+	
 	with open(filename, 'w') as fh:
-	    fh.write(template.render(vars=variables,bools=bools))
+	    fh.write(template.render(vars=variables,bools=bools,aspect=aspect))
 
 
-	print("Generated html")
+	print("Generated html at {}".format(filename))
 	return
 
 
@@ -119,8 +152,8 @@ def generate_html(tf,target_dir):
 		
 		
 if __name__=='__main__':
-	copy_files('./','KLF13','target_KLF13')
-	generate_html('KLF13','./target_KLF13')
+	copy_files('./','YY1','target_YY1')
+	generate_html('YY1','./target_YY1','./')
 
 		
 		

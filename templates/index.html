@@ -23,12 +23,12 @@
 
 {% if bools.short_patterns_clustermap %}
 <h2>Clustering short MoDisco Motifs on Jaccard Similarity</h2>
-<embed src={{vars.short_patterns_clustermap}} alt="Clustermap" width="300px" height="300px">
+<embed src={{vars.short_patterns_clustermap}} alt="Clustermap" width="400px" height="400px">
 {% endif %}
 
 {% if bools.short_patterns %}
 <h2>Short TF Modisco motifs</h2>
-<embed src={{vars.short_patterns}} alt="Motifs" width="800px" height="400px">
+<embed src={{vars.short_patterns}} alt="Motifs" width={{aspect.width}} height={{aspect.short_height}}>
 {% endif %}
 
 {% if bools.long_patterns_info %}
@@ -38,12 +38,12 @@
 
 {% if bools.long_patterns_clustermap %}
 <h2>Clustering Long MoDisco Motifs on Jaccard Similarity</h2>
-<embed src={{vars.long_patterns_clustermap}} alt="Clustermap" width="300px" height="300px">
+<embed src={{vars.long_patterns_clustermap}} alt="Clustermap" width="400px" height="400px">
 {% endif %}
 
 {% if bools.long_patterns %}
 <h2>Long TF Modisco motifs</h2>
-<embed src={{vars.long_patterns}} alt="Motifs" width="800px" height="400px">
+<embed src={{vars.long_patterns}} alt="Motifs" width={{aspect.width}} height={{aspect.long_height}}>
 {% endif %}
 
 
