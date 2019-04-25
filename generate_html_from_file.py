@@ -95,15 +95,19 @@ def generate_html(tf,target_dir,target_dir_html=None):
 	 
 	if not target_dir_html:
 		filename = os.path.join(root,'{}_Modisco_report.html'.format(tf))
+		target_dir_html = root
 	else:
 		assert(os.path.exists(target_dir_html))
 		filename = os.path.join(target_dir_html,'{}_Modisco_report.html'.format(tf))
 
-	variables = {'short_patterns':os.path.join(root,'short_patterns.jpg'),
-				'short_patterns_clustermap':os.path.join(root,'short_patterns_clustermap.jpg'),
-				'long_patterns':os.path.join(root,'long_patterns.jpg'),
-				'long_patterns_clustermap':os.path.join(root,'long_patterns_clustermap.jpg'),
-				'meme_motif':os.path.join(root,'meme_motif.jpg'),
+	#Important to use relative paths to load images on the server
+	rel_root = os.path.relpath(root,target_dir_html)
+
+	variables = {'short_patterns':os.path.join(rel_root,'short_patterns.jpg'),
+				'short_patterns_clustermap':os.path.join(rel_root,'short_patterns_clustermap.jpg'),
+				'long_patterns':os.path.join(rel_root,'long_patterns.jpg'),
+				'long_patterns_clustermap':os.path.join(rel_root,'long_patterns_clustermap.jpg'),
+				'meme_motif':os.path.join(rel_root,'meme_motif.jpg'),
 				'short_patterns_info':os.path.join(templates_dir,'short_patterns_info.html'),
 				'long_patterns_info':os.path.join(templates_dir,'long_patterns_info.html'),
 				'model_perfofmances':os.path.join(templates_dir,'model_perfofmances.html'),
@@ -152,8 +156,8 @@ def generate_html(tf,target_dir,target_dir_html=None):
 		
 		
 if __name__=='__main__':
-	copy_files('./','YY1','target_YY1')
-	generate_html('YY1','./target_YY1','./')
+	copy_files('./','CTCF','target_CTCF')
+	generate_html('CTCF','./target_CTCF','./')
 
 		
 		
